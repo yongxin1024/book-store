@@ -21,6 +21,9 @@ router.post('/', async (req, res) => {
             $inc: { saleCount: quantity }
         });
 
+        // 触发 WebSocket 事件，通知前端刷新
+        req.app.get('io').emit('orderPlaced', { message: 'New order placed, refresh the list!' });
+
         res.status(201).json(order);
     } catch (err) {
         res.status(400).json({ message: err.message });

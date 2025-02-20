@@ -4,11 +4,24 @@ const dotenv = require('dotenv');
 const bookRoutes = require('./routes/bookRoutes');
 const IPAddress = require('./utils/ip');
 const cors = require('cors');
+const socketIo = require('socket.io');
+const http = require('http');
+
 dotenv.config();
 
 const app = express();
 app.use(express.json());
 app.use(cors());
+
+const server = http.createServer(app);
+const io = socketIo(server, {
+    cors: {
+        origin: "http://localhost:3006",  // FIX ME 前端地址
+        methods: ["GET", "POST"]
+    }
+});
+// 将 io 实例传递给路由
+app.set('io', io);
 
 // 连接数据库
 mongoose.connect(process.env.MONGODB_URI)
@@ -22,9 +35,18 @@ app.use('/api/orders', orderRoutes);
 // 路由
 app.use('/api/books', bookRoutes);
 
-const PORT = process.env.PORT || 3000;
+// WebSocket 通信（例如，用来通知客户端刷新）
+io.on('connection', (socket) => {
+    console.log('A user connected');
 
-app.listen(PORT, () => {
+    socket.on('disconnect', () => {
+        console.log('A user disconnected');
+    });
+});
+
+
+const PORT = process.env.PORT || 3000;
+server.listen(PORT, () => {
     const ips = IPAddress();
     const host = `http://localhost:${PORT}`;
 

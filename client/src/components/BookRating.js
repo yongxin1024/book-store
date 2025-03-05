@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { FaStar } from 'react-icons/fa';
 import { Form, Button, Alert } from 'react-bootstrap';
 import axios from 'axios';
+// 引入common.css
+import '../styles/Common.css';
 
 function BookRating({ orderId, bookTitle, onSubmit }) {
   const [rating, setRating] = useState(0);
@@ -104,10 +106,7 @@ function BookRating({ orderId, bookTitle, onSubmit }) {
         <Button 
           type="submit" 
           disabled={!rating || !selectedBook}
-          style={{
-            background: 'linear-gradient(45deg, #6ac1c5, #2980b9)',
-            border: 'none'
-          }}
+          className='gradient-button'
         >
           提交评价
         </Button>

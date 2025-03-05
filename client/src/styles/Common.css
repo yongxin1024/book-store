@@ -1,0 +1,20 @@
+.gradient-button {
+  background: linear-gradient(45deg, #6ac1c5, #2980b9);
+  border: none;
+  border-radius: 4px;
+  color: white;
+  padding: 8px 16px;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(106, 193, 197, 0.3);
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(106, 193, 197, 0.4);
+  }
+
+  &:disabled {
+    background: #cccccc;
+    transform: none;
+    box-shadow: none;
+  }
+}

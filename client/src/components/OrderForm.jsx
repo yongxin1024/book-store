@@ -3,7 +3,7 @@ import axios from 'axios';
 import { Form, Button, Alert } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.css';
 import { FaStar } from 'react-icons/fa'; 
-
+import '../styles/Common.css';
 export default function OrderForm() {
     const [books, setBooks] = useState([]);
     const [bookId, setBookId] = useState('');
@@ -94,7 +94,7 @@ export default function OrderForm() {
                     />
                 </Form.Group>
 
-                <Button variant="primary" type="submit">提交订单</Button>
+                <Button variant="primary" type="submit" className='gradient-button'>提交订单</Button>
             </Form>
         </div>
     );

@@ -6,6 +6,7 @@ import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import { Link, Outlet } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.css';
+import './styles/Navigation.css';
 import { OrderPage } from './pages/order';
 import { RankPage } from './pages/rank';
 import { CommentsPage } from './pages/comments';  // 添加导入
@@ -19,7 +20,7 @@ function PrivateRoute({ children }) {
 
 function Layout() {
   const navigate = useNavigate();
-  const location = useLocation();  // 添加这行来获取当前路径
+  const location = useLocation();
 
   const handleLogout = () => {
     sessionStorage.removeItem('isAuthenticated');
@@ -28,7 +29,7 @@ function Layout() {
 
   return (
     <>
-      <Navbar bg="light" expand="lg">
+      <Navbar expand="lg" className="nav-container">
         <Container>
           <Navbar.Brand>图书销售系统</Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
@@ -37,63 +38,21 @@ function Layout() {
               <Nav.Link 
                 as={Link} 
                 to="/order" 
-                active={location.pathname === '/order'}
-                style={{
-                  position: 'relative',
-                  margin: '0 10px',
-                  padding: '8px 16px',
-                  color: location.pathname === '/order' ? '#fff' : '#666',
-                  background: location.pathname === '/order' 
-                    ? 'linear-gradient(45deg, #6ac1c5, #2980b9)' 
-                    : 'transparent',
-                  borderRadius: '4px',
-                  transition: 'all 0.3s ease',
-                  boxShadow: location.pathname === '/order'
-                    ? '0 4px 15px rgba(106, 193, 197, 0.3)'
-                    : 'none'
-                }}
+                className={location.pathname === '/order' ? 'active' : ''}
               >
                 订单管理
               </Nav.Link>
               <Nav.Link 
                 as={Link} 
                 to="/rank" 
-                active={location.pathname === '/rank'}
-                style={{
-                  position: 'relative',
-                  margin: '0 10px',
-                  padding: '8px 16px',
-                  color: location.pathname === '/rank' ? '#fff' : '#666',
-                  background: location.pathname === '/rank' 
-                    ? 'linear-gradient(45deg, #6ac1c5, #2980b9)' 
-                    : 'transparent',
-                  borderRadius: '4px',
-                  transition: 'all 0.3s ease',
-                  boxShadow: location.pathname === '/rank'
-                    ? '0 4px 15px rgba(106, 193, 197, 0.3)'
-                    : 'none'
-                }}
+                className={location.pathname === '/rank' ? 'active' : ''}
               >
                 销售排名
               </Nav.Link>
               <Nav.Link 
                 as={Link} 
                 to="/comments" 
-                active={location.pathname === '/comments'}
-                style={{
-                  position: 'relative',
-                  margin: '0 10px',
-                  padding: '8px 16px',
-                  color: location.pathname === '/comments' ? '#fff' : '#666',
-                  background: location.pathname === '/comments' 
-                    ? 'linear-gradient(45deg, #6ac1c5, #2980b9)' 
-                    : 'transparent',
-                  borderRadius: '4px',
-                  transition: 'all 0.3s ease',
-                  boxShadow: location.pathname === '/comments'
-                    ? '0 4px 15px rgba(106, 193, 197, 0.3)'
-                    : 'none'
-                }}
+                className={location.pathname === '/comments' ? 'active' : ''}
               >
                 书籍评论
               </Nav.Link>
@@ -102,20 +61,7 @@ function Layout() {
               <Button 
                 variant="outline-secondary" 
                 onClick={handleLogout}
-                size="sm"
-                style={{
-                  borderRadius: '4px',
-                  padding: '8px 16px',
-                  transition: 'all 0.3s ease',
-                  background: 'transparent',
-                  border: '1px solid #6ac1c5',
-                  color: '#6ac1c5',
-                  ':hover': {
-                    background: 'linear-gradient(45deg, #6ac1c5, #2980b9)',
-                    color: '#fff',
-                    border: '1px solid transparent'
-                  }
-                }}
+                className="gradient-button"
               >
                 退出登录
               </Button>

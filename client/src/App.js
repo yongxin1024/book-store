@@ -1,4 +1,5 @@
-import { Routes, Route, Navigate } from 'react-router-dom';
+import { Routes, Route, Navigate, useNavigate } from 'react-router-dom';
+import Button from 'react-bootstrap/Button';
 import Login from './components/Login';
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
@@ -10,11 +11,18 @@ import { RankPage } from './pages/rank';
 
 
 function PrivateRoute({ children }) {
-  const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
+  const isAuthenticated = sessionStorage.getItem('isAuthenticated') === 'true';
   return isAuthenticated ? children : <Navigate to="/login" />;
 }
 
 function Layout() {
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    sessionStorage.removeItem('isAuthenticated');
+    navigate('/login');
+  };
+
   return (
     <>
       <Navbar bg="light" expand="lg">
@@ -25,6 +33,15 @@ function Layout() {
             <Nav className="me-auto">
               <Nav.Link as={Link} to="/order">订单管理</Nav.Link>
               <Nav.Link as={Link} to="/rank">销售排名</Nav.Link>
+            </Nav>
+            <Nav>
+              <Button 
+                variant="outline-secondary" 
+                onClick={handleLogout}
+                size="sm"
+              >
+                退出登录
+              </Button>
             </Nav>
           </Navbar.Collapse>
         </Container>

@@ -19,7 +19,7 @@ function Login() {
   const handleSubmit = (values) => {
     // 这里添加实际的登录逻辑
     if (values.username === 'admin' && values.password === 'admin') {
-      localStorage.setItem('isAuthenticated', 'true');
+      sessionStorage.setItem('isAuthenticated', 'true');
       navigate('/rank');
     } else {
       setError('用户名或密码错误');

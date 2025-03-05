@@ -15,7 +15,7 @@ app.use(cors());
 const server = http.createServer(app);
 const io = socketIo(server, {
     cors: {
-        origin: "http://localhost:3006",  // FIX ME 前端地址
+        origin: ["http://localhost:3006", "http://127.0.0.1:3006"],  // Allow both localhost and IP
         methods: ["GET", "POST"]
     }
 });
@@ -35,6 +35,9 @@ app.use('/api/orders', orderRoutes);
 const bookRoutes = require('./routes/bookRoutes');
 app.use('/api/books', bookRoutes);
 app.use('/api/rating', require('./routes/ratingRoutes'));
+// 图表路由
+const chartLayoutRouter = require('./routes/chartLayoutRoutes');  // 改为正确的文件名
+app.use('/api/chart', chartLayoutRouter);
 
 // WebSocket 通信（例如，用来通知客户端刷新）
 io.on('connection', (socket) => {

@@ -28,6 +28,7 @@ echarts.use([
 export default function SalesRanking() {
     const [ranking, setRanking] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [charts, setCharts] = useState(['bar', 'pie']);
 
     const getBarOption = () => ({
         title: {
@@ -154,8 +155,30 @@ export default function SalesRanking() {
             .catch(() => setLoading(false));
     };
 
+    // 获取保存的布局
+    const fetchLayout = async () => {
+        try {
+            const response = await axios.get('/api/chart/layout');
+            setCharts(response.data);
+        } catch (error) {
+            console.error('获取布局失败:', error);
+        }
+    };
+
+    // 保存布局到服务器
+    const saveLayout = async (newLayout) => {
+        try {
+            await axios.post('/api/chart/layout', {
+                positions: newLayout
+            });
+        } catch (error) {
+            console.error('保存布局失败:', error);
+        }
+    };
+
     useEffect(() => {
         fetchRanking();
+        fetchLayout();
         // FIX ME:建立 WebSocket 连接, move server address into configuration
         const socket = io('http://127.0.0.1:3100', {
             reconnection: true,
@@ -174,6 +197,32 @@ export default function SalesRanking() {
         };
     }, []);
 
+    const handleDragStart = (e, index) => {
+        e.dataTransfer.setData('text/plain', index);
+        e.currentTarget.classList.add('dragging');
+    };
+
+    const handleDragOver = (e) => {
+        e.preventDefault();
+    };
+
+    const handleDrop = async (e, dropIndex) => {
+        e.preventDefault();
+        const dragIndex = e.dataTransfer.getData('text/plain');
+        const newCharts = [...charts];
+        const temp = newCharts[dragIndex];
+        newCharts[dragIndex] = newCharts[dropIndex];
+        newCharts[dropIndex] = temp;
+        setCharts(newCharts);
+        
+        // 保存新的布局
+        await saveLayout(newCharts);
+    };
+
+    const handleDragEnd = (e) => {
+        e.currentTarget.classList.remove('dragging');
+    };
+
     return (
         <div className="sales-ranking-container">
             {loading ? (
@@ -182,16 +231,23 @@ export default function SalesRanking() {
                 </div>
             ) : (
                 <div className="charts-container">
-                    <ReactECharts 
-                        option={getBarOption()} 
-                        style={{ height: '400px' }}
-                        className="sales-chart bar-chart"
-                    />
-                    <ReactECharts 
-                        option={getPieOption()} 
-                        style={{ height: '400px' }}
-                        className="sales-chart pie-chart"
-                    />
+                    {charts.map((chartType, index) => (
+                        <div
+                            key={chartType}
+                            draggable
+                            onDragStart={(e) => handleDragStart(e, index)}
+                            onDragOver={handleDragOver}
+                            onDrop={(e) => handleDrop(e, index)}
+                            onDragEnd={handleDragEnd}
+                            className="sales-chart"
+                        >
+                            <ReactECharts 
+                                option={chartType === 'bar' ? getBarOption() : getPieOption()} 
+                                style={{ height: '400px' }}
+                                className={`${chartType}-chart`}
+                            />
+                        </div>
+                    ))}
                 </div>
             )}
         </div>

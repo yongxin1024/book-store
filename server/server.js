@@ -1,7 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
-const bookRoutes = require('./routes/bookRoutes');
 const IPAddress = require('./utils/ip');
 const cors = require('cors');
 const socketIo = require('socket.io');
@@ -33,7 +32,9 @@ mongoose.connect(process.env.MONGODB_URI)
 const orderRoutes = require('./routes/orderRoutes');
 app.use('/api/orders', orderRoutes);
 // 路由
+const bookRoutes = require('./routes/bookRoutes');
 app.use('/api/books', bookRoutes);
+app.use('/api/rating', require('./routes/ratingRoutes'));
 
 // WebSocket 通信（例如，用来通知客户端刷新）
 io.on('connection', (socket) => {

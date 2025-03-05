@@ -1,11 +1,12 @@
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';  // Add Link to the import
 import { FaUser, FaLock } from 'react-icons/fa';
 import Container from 'react-bootstrap/Container';
 import Button from 'react-bootstrap/Button';
 import Alert from 'react-bootstrap/Alert';
+import '../styles/Login.css';
 
 const LoginSchema = Yup.object().shape({
   username: Yup.string().required('用户名不能为空'),
@@ -29,24 +30,10 @@ function Login() {
   return (
     <Container 
       fluid
-      className="d-flex justify-content-center align-items-center p-0"
-      style={{ 
-        minHeight: '100vh',
-        background: 'linear-gradient(45deg, #6ac1c5, #bda5ff)',
-        fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif"
-      }}>
-      <div className="p-5 rounded" style={{ 
-        width: '100%', 
-        maxWidth: '400px',
-        background: 'rgba(255, 255, 255, 0.95)',
-        boxShadow: '0 0 20px rgba(0, 0, 0, 0.1)',
-        transform: 'translateY(0)',
-        transition: 'transform 0.3s ease',
-        ':hover': {
-          transform: 'translateY(-5px)'
-        }
-      }}>
-        <h2 className="text-center mb-4" style={{ color: '#333' }}>图书销售系统</h2>
+      className="login-container d-flex justify-content-center align-items-center p-0"
+    >
+      <div className="login-form-container p-5 rounded">
+        <h2 className="login-title text-center mb-4">图书销售系统</h2>
         {error && <Alert variant="danger">{error}</Alert>}
         
         <Formik
@@ -58,27 +45,14 @@ function Login() {
             <Form>
               <div className="mb-3">
                 <div className="input-group">
-                  <span className="input-group-text" style={{
-                    background: 'transparent',
-                    border: '1px solid #ddd',
-                    color: '#555'
-                  }}>
+                  <span className="input-group-text login-input-group">
                     <FaUser />
                   </span>
                   <Field
                     name="username"
                     type="text"
-                    className={`form-control ${errors.username && touched.username ? 'is-invalid' : ''}`}
+                    className={`form-control login-input ${errors.username && touched.username ? 'is-invalid' : ''}`}
                     placeholder="用户名"
-                    style={{
-                      padding: '0.8rem',
-                      border: '1px solid #ddd',
-                      transition: 'border-color 0.3s ease',
-                      ':focus': {
-                        borderColor: '#6ac1c5',
-                        outline: 'none'
-                      }
-                    }}
                   />
                 </div>
                 {errors.username && touched.username && (
@@ -88,27 +62,14 @@ function Login() {
 
               <div className="mb-4">
                 <div className="input-group">
-                  <span className="input-group-text" style={{
-                    background: 'transparent',
-                    border: '1px solid #ddd',
-                    color: '#555'
-                  }}>
+                  <span className="input-group-text login-input-group">
                     <FaLock />
                   </span>
                   <Field
                     name="password"
                     type="password"
-                    className={`form-control ${errors.password && touched.password ? 'is-invalid' : ''}`}
+                    className={`form-control login-input ${errors.password && touched.password ? 'is-invalid' : ''}`}
                     placeholder="密码"
-                    style={{
-                      padding: '0.8rem',
-                      border: '1px solid #ddd',
-                      transition: 'border-color 0.3s ease',
-                      ':focus': {
-                        borderColor: '#6ac1c5',
-                        outline: 'none'
-                      }
-                    }}
                   />
                 </div>
                 {errors.password && touched.password && (
@@ -118,23 +79,16 @@ function Login() {
 
               <Button 
                 type="submit" 
-                className="w-100"
-                style={{
-                  padding: '0.8rem',
-                  background: 'linear-gradient(45deg, #6ac1c5, #bda5ff)',
-                  border: 'none',
-                  borderRadius: '5px',
-                  color: 'white',
-                  fontSize: '1rem',
-                  cursor: 'pointer',
-                  transition: 'opacity 0.3s ease',
-                  ':hover': {
-                    opacity: '0.9'
-                  }
-                }}
+                className="login-button w-100 mb-3"
               >
                 登录
               </Button>
+              
+              <div className="text-center">
+                <Link to="/forgot-password" className="forgot-password-link">
+                  忘记密码？
+                </Link>
+              </div>
             </Form>
           )}
         </Formik>

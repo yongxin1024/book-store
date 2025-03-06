@@ -1,0 +1,65 @@
+.login-container {
+  min-height: 100vh;
+  background: linear-gradient(45deg, #6ac1c5, #bda5ff);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+
+  .login-form-container {
+    width: 100%;
+    max-width: 400px;
+    background: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    transform: translateY(0);
+    transition: transform 0.3s ease;
+
+    &:hover {
+      transform: translateY(-5px);
+    }
+
+    .login-title {
+      color: #333;
+    }
+
+    .input-group {
+      .login-input-group {
+        background: transparent;
+        border: 1px solid #ddd;
+        color: #555;
+      }
+
+      .login-input {
+        padding: 0.8rem;
+        border: 1px solid #ddd;
+        transition: border-color 0.3s ease;
+
+        &:focus {
+          border-color: #6ac1c5;
+          outline: none;
+        }
+      }
+    }
+
+    .login-button {
+      padding: 0.8rem;
+      background: linear-gradient(45deg, #6ac1c5, #bda5ff);
+      border: none;
+      border-radius: 5px;
+      color: white;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: opacity 0.3s ease;
+
+      &:hover {
+        opacity: 0.9;
+      }
+    }
+
+    .forgot-password-link {
+      color: #6ac1c5;
+      text-decoration: none;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+}

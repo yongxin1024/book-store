@@ -2,12 +2,14 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Form, Button, Alert } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.css';
-
+import { FaStar } from 'react-icons/fa'; 
+import '../styles/Common.css';
 export default function OrderForm() {
     const [books, setBooks] = useState([]);
     const [bookId, setBookId] = useState('');
     const [quantity, setQuantity] = useState(1);
     const [message, setMessage] = useState({variant: 'success', msg: ''});
+    const [selectedBookRating, setSelectedBookRating] = useState(0);
 
     useEffect(() => {
         axios.get('/api/books')
@@ -25,6 +27,22 @@ export default function OrderForm() {
                 console.log(err);
                 setMessage({variant: 'danger', msg: '创建订单失败'});
             });
+            setTimeout(() => {
+                setMessage({variant: 'success', msg: ''});
+            }, 2000);
+    };
+
+    // 在选择书籍时获取评分
+    const handleBookSelect = (e) => {
+        const selectedId = e.target.value;
+        setBookId(selectedId);
+        
+        if (selectedId) {
+            const selectedBook = books.find(book => book._id === selectedId);
+            setSelectedBookRating(selectedBook?.averageRating || 0);
+        } else {
+            setSelectedBookRating(0);
+        }
     };
 
     return (
@@ -36,7 +54,7 @@ export default function OrderForm() {
                     <Form.Label>选择书籍</Form.Label>
                     <Form.Select
                         value={bookId}
-                        onChange={e => setBookId(e.target.value)}
+                        onChange={handleBookSelect}
                         required
                     >
                         <option value="">请选择书籍</option>
@@ -47,6 +65,23 @@ export default function OrderForm() {
                         ))}
                     </Form.Select>
                 </Form.Group>
+
+                {bookId && (
+                    <div className="mb-3">
+                        <div className="d-flex align-items-center">
+                            <span className="me-2">平均评分：</span>
+                            {[...Array(5)].map((_, index) => (
+                                <FaStar
+                                    key={index}
+                                    size={16}
+                                    style={{ marginRight: '2px' }}
+                                    color={index < Math.round(selectedBookRating) ? "#ffc107" : "#e4e5e9"}
+                                />
+                            ))}
+                            <span className="ms-2">({selectedBookRating.toFixed(1)})</span>
+                        </div>
+                    </div>
+                )}
 
                 <Form.Group className="mb-3">
                     <Form.Label>数量</Form.Label>
@@ -59,7 +94,7 @@ export default function OrderForm() {
                     />
                 </Form.Group>
 
-                <Button variant="primary" type="submit">提交订单</Button>
+                <Button variant="primary" type="submit" className='gradient-button'>提交订单</Button>
             </Form>
         </div>
     );

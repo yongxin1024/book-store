@@ -1,0 +1,17 @@
+### add books
+POST http://localhost:3100/api/books
+Content-Type: application/json
+
+{
+	"title": "DeepSeek R2 使用指北",
+	"author": "小梁",
+	"year": 2024
+}
+
+### get books
+GET http://localhost:3100/api/books
+Accept: application/json
+
+
+
+
